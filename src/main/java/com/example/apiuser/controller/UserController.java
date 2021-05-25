@@ -1,13 +1,17 @@
-package com.example.demo.controller;
+package com.example.apiuser.controller;
 //It will take the calls from outside
 
 
-import com.example.demo.exception.ApiRequestException;
-import com.example.demo.exception.DataNotFoundException;
-import com.example.demo.models.ShowUserModel;
-import com.example.demo.models.UpdateUserRequestModel;
-import com.example.demo.models.UserModel;
-import com.example.demo.services.UserService;
+import com.example.apiuser.exception.ApiAuthException;
+import com.example.apiuser.exception.ApiRequestException;
+import com.example.apiuser.exception.DataNotFoundException;
+import com.example.apiuser.models.ShowUserModel;
+import com.example.apiuser.models.UpdateUserRequestModel;
+import com.example.apiuser.models.UserModel;
+import com.example.apiuser.models.request.forms.LoginForm;
+import com.example.apiuser.services.UserService;
+import com.example.apiuser.utils.response.CommonResponse;
+import com.example.apiuser.utils.response.Response;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
@@ -20,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static com.example.apiuser.utils.DateUtils.getTimestampNow;
+
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -28,10 +34,6 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping()
-    public String hola(){
-        return "Server is on";
-    }
 
 
     @GetMapping("/get")
@@ -41,18 +43,19 @@ public class UserController {
 
     //Get User By ID
     @GetMapping("/get/{userId}")
-    public ShowUserModel getUserById(@PathVariable("userId") String userId){
+    public Response getUserById(@PathVariable("userId") String userId){
         UserModel user = userService.getUserById(userId);
         if(user == null){
             throw new DataNotFoundException("User Not Found");
         }
 
         ShowUserModel showUser = new ShowUserModel(user);
-        return showUser;
+
+        return CommonResponse.setResponseWithOk(showUser, "", 200);
     }
 
     @PostMapping("/add")
-    public UserModel createUser(@Valid @RequestBody UserModel user, Errors error){
+    public Response createUser(@Valid @RequestBody UserModel user, Errors error){
         if(error.hasErrors()){
             String errorMessage = "";
             List<ObjectError> allErrors = error.getAllErrors();
@@ -61,21 +64,8 @@ public class UserController {
             }
             throw new ApiRequestException(errorMessage);
         }
-        //Creating a random UUID to set the user's id
-        String uuid = UUID.randomUUID().toString();
-        user.setUserId(uuid);
-        //Setting the "Created at" value
-        Timestamp now = new Timestamp(System.nanoTime());
-        user.setCreatedAt(now);
-        //Encrypting the password before saving //TODO: Cambiarlo por uno propio.
-        String hashedPwd = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(16));
-        user.setPassword(hashedPwd);
 
-        //Setting the "status" value
-        user.setStatus("ACTIVE");
-
-
-        return this.userService.createUser(user);
+        return CommonResponse.setResponseWithOk(this.userService.createUser(user), "User successfully created", 201);
     }
 
     //TODO: Falta hacer
@@ -92,10 +82,22 @@ public class UserController {
     }
 
     //TODO A IMPLEMENTAR
-    @PutMapping("login")
-    public String login(@RequestBody String email, @RequestBody String password){
+    @PostMapping("login")
+    public Response login(@RequestBody LoginForm loginForm){
 
-        return null;
+        String email = loginForm.getEmail();
+        String password = loginForm.getPassword();
+
+        //TODO: find how to handle findBy* with CrudRepository
+        UserModel user = this.userService.getUserByEmail(email);
+
+        if(user == null){
+            throw new ApiAuthException("User or password incorrect");
+        }
+
+        String response = this.userService.login(user, password);
+
+        return CommonResponse.setResponseWithOk("SomeToken", response, 200);
     }
 
 }

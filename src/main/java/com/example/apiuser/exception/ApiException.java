@@ -1,16 +1,12 @@
-package com.example.demo.exception;
-
-import org.springframework.http.HttpStatus;
-
-import java.sql.Timestamp;
+package com.example.apiuser.exception;
 
 public class ApiException {
     private final String message;
     private final Throwable throwable;
-    private final HttpStatus code;
+    private final int code;
     private final String timestamp;
 
-    public ApiException(String message, Throwable throwable, HttpStatus code, String timestamp) {
+    public ApiException(String message, Throwable throwable, int code, String timestamp) {
         this.message = message;
         this.throwable = throwable;
         this.code = code;
@@ -25,7 +21,7 @@ public class ApiException {
         return throwable;
     }
 
-    public HttpStatus getCode() {
+    public int getCode() {
         return code;
     }
 

@@ -1,16 +1,12 @@
-package com.example.demo.exception;
+package com.example.apiuser.exception;
 
-import com.example.demo.utils.DateUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.sql.Timestamp;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import static com.example.apiuser.utils.DateUtils.getStringTimestampNow;
 
-import static com.example.demo.utils.DateUtils.parseDate;
 
 @ControllerAdvice
 public class ApiExceptionHandler {
@@ -23,8 +19,8 @@ public class ApiExceptionHandler {
         ApiException apiException = new ApiException(
                 e.getMessage(),
                 e,
-                badRequest,
-                parseDate(new Timestamp(System.currentTimeMillis()))
+                badRequest.value(),
+                getStringTimestampNow()
         );
 
         //Return the response entity
@@ -39,8 +35,8 @@ public class ApiExceptionHandler {
         ApiException apiException = new ApiException(
                 e.getMessage(),
                 e,
-                notFound,
-                parseDate(new Timestamp(System.currentTimeMillis()))
+                notFound.value(),
+                getStringTimestampNow()
         );
 
         //Return the response entity
@@ -55,8 +51,8 @@ public class ApiExceptionHandler {
         ApiException apiException = new ApiException(
                 e.getMessage(),
                 e,
-                unauthorized,
-                parseDate(new Timestamp(System.currentTimeMillis()))
+                unauthorized.value(),
+                getStringTimestampNow()
         );
 
         //Return the response entity
@@ -71,8 +67,8 @@ public class ApiExceptionHandler {
         ApiException apiException = new ApiException(
                 e.getMessage(),
                 e,
-                notHandled,
-                parseDate(new Timestamp(System.currentTimeMillis()))
+                notHandled.value(),
+                getStringTimestampNow()
 
         );
 

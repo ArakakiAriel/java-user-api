@@ -1,4 +1,4 @@
-package com.example.demo.exception;
+package com.example.apiuser.exception;
 
 
 public class ApiAuthException extends RuntimeException{

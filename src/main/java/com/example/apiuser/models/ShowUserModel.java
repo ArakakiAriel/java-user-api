@@ -1,6 +1,5 @@
-package com.example.demo.models;
+package com.example.apiuser.models;
 
-import javax.validation.constraints.Pattern;
 import java.sql.Timestamp;
 
 public class ShowUserModel {

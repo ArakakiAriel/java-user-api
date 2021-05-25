@@ -1,9 +1,5 @@
-package com.example.demo.models;
+package com.example.apiuser.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import javax.persistence.Column;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.sql.Timestamp;
 
