@@ -6,20 +6,108 @@
 	},
 	"item": [
 		{
+			"name": "ROLES",
+			"item": [
+				{
+					"name": "Add new role (admin)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roleName\": \"ADMIN\",\r\n    \"roleDescription\": \"Admin user with all the privileges\",\r\n    \"rolePermissions\": \"[{ex1: 1},{ex2: 1},{ex3: 1},{ex4: 1},{ex5: 1}]\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/role/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"role",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add new role (user)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roleName\": \"USER\",\r\n    \"roleDescription\": \"Normal user with minimum privileges\",\r\n    \"rolePermissions\": \"[{ex1: 1},{ex2: 1},{ex3: 0},{ex4: 0},{ex5: 0}]\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/role/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"role",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all the roles in the DB",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/role/get/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"role",
+								"get",
+								"all"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "HealthCheck",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/v1/healthcheck",
+					"raw": "http://localhost:8080/healthcheck",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"api",
-						"v1",
 						"healthcheck"
 					]
 				}
@@ -32,7 +120,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/v1/users/get",
+					"raw": "http://localhost:8080/api/v1/user/get/all",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -41,8 +129,9 @@
 					"path": [
 						"api",
 						"v1",
-						"users",
-						"get"
+						"user",
+						"get",
+						"all"
 					]
 				}
 			},
@@ -55,7 +144,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"fullName\": \"Random Guy\",\r\n        \"email\": \"someothermail@gmail.com\",\r\n        \"phoneNumber\": \"080-1234-6547\",\r\n        \"password\": \"password\"\r\n}",
+					"raw": "{\r\n        \"fullName\": \"Don Pepito\",\r\n        \"email\": \"pepito123@gmail.com\",\r\n        \"phoneNumber\": \"080-4368-6547\",\r\n        \"password\": \"password\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -63,7 +152,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/v1/users/add",
+					"raw": "http://localhost:8080/api/v1/user/add",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -72,7 +161,7 @@
 					"path": [
 						"api",
 						"v1",
-						"users",
+						"user",
 						"add"
 					]
 				}
@@ -86,7 +175,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"fullName\": \"Roman Riquelme\",\r\n        \"email\": \"elmejor@gmail.com\",\r\n        \"phoneNumber\": \"080-1234-6547\",\r\n        \"password\": \"password\"\r\n}",
+					"raw": "{\r\n        \"email\": \"pepito123@gmail.com\",\r\n        \"password\": \"password\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -94,7 +183,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/v1/users/login",
+					"raw": "http://localhost:8080/api/v1/user/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -103,7 +192,7 @@
 					"path": [
 						"api",
 						"v1",
-						"users",
+						"user",
 						"login"
 					]
 				}
@@ -120,7 +209,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"fullName\": \"Demo Cuatro\",\r\n    \"email\": \"Papurri3231232124@gmail.com\",\r\n    \"password\": \"Apassword\",\r\n    \"phoneNumber\": \"080-1234-1238\"\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -128,7 +217,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/v1/users/get/266f908e-cf35-4635-89bb-ebe033d9e54e",
+					"raw": "http://localhost:8080/api/v1/user/get/266f908e-cf35-4635-89bb-ebe033d9e54e",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -137,7 +226,7 @@
 					"path": [
 						"api",
 						"v1",
-						"users",
+						"user",
 						"get",
 						"266f908e-cf35-4635-89bb-ebe033d9e54e"
 					]
