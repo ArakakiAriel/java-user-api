@@ -1,6 +1,10 @@
 package com.example.apiuser.models;
 
+
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class ShowUserModel {
 
@@ -11,6 +15,7 @@ public class ShowUserModel {
     private Timestamp createdAt;
     private Timestamp lastLogin;
     private Timestamp updatedAt;
+    private Set<String> roles ;
 
     public ShowUserModel(UserModel user) {
         this.fullName = user.getFullName();
@@ -50,4 +55,11 @@ public class ShowUserModel {
         return updatedAt;
     }
 
+    public Set<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set roles) {
+        this.roles = roles;
+    }
 }

@@ -8,7 +8,6 @@ public class UpdateUserRequestModel {
     @Pattern(regexp = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", message = "{Please insert a valid email address}")
     private String email;
     private String phoneNumber;
-    private String password;
     private String status;
     private Timestamp lastLogin;
     private Timestamp updatedAt;
@@ -35,14 +34,6 @@ public class UpdateUserRequestModel {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getStatus() {

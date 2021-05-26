@@ -9,6 +9,7 @@ import com.example.apiuser.models.ShowUserModel;
 import com.example.apiuser.models.UpdateUserRequestModel;
 import com.example.apiuser.models.UserModel;
 import com.example.apiuser.models.request.forms.LoginForm;
+import com.example.apiuser.models.request.forms.PasswordChangeForm;
 import com.example.apiuser.services.UserService;
 import com.example.apiuser.utils.response.CommonResponse;
 import com.example.apiuser.utils.response.Response;
@@ -28,7 +29,7 @@ import static com.example.apiuser.utils.DateUtils.getTimestampNow;
 
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/user")
 public class UserController {
 
     @Autowired
@@ -36,7 +37,8 @@ public class UserController {
 
 
 
-    @GetMapping("/get")
+    //TODO: We have to delete it for production
+    @GetMapping("/get/all")
     public ArrayList<UserModel> getUsers(){
         return userService.getUsers();
     }
@@ -46,7 +48,7 @@ public class UserController {
     public Response getUserById(@PathVariable("userId") String userId){
         UserModel user = userService.getUserById(userId);
         if(user == null){
-            throw new DataNotFoundException("User Not Found");
+            throw new DataNotFoundException("User not found in the database");
         }
 
         ShowUserModel showUser = new ShowUserModel(user);
@@ -55,10 +57,10 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public Response createUser(@Valid @RequestBody UserModel user, Errors error){
-        if(error.hasErrors()){
+    public Response createUser(@Valid @RequestBody UserModel user, Errors errors){
+        if(errors.hasErrors()){
             String errorMessage = "";
-            List<ObjectError> allErrors = error.getAllErrors();
+            List<ObjectError> allErrors = errors.getAllErrors();
             for(ObjectError e: allErrors){
                 errorMessage += e.getDefaultMessage();
             }
@@ -68,36 +70,45 @@ public class UserController {
         return CommonResponse.setResponseWithOk(this.userService.createUser(user), "User successfully created", 201);
     }
 
+
     //TODO: Falta hacer
     @PutMapping("update/{userId}")
     public UserModel updateUser(@PathVariable("userId") String userId,@Valid @RequestBody UpdateUserRequestModel updatedUser){
 
         UserModel user = this.userService.getUserById(userId);
-        //Setting the "Updated at" value
-        Timestamp now = new Timestamp(System.nanoTime());
-        //user.setUpdatedAt(now);
+
+
+
 
         return null;
         //return this.userService.updateUser(user);
     }
 
-    //TODO A IMPLEMENTAR
-    @PostMapping("login")
-    public Response login(@RequestBody LoginForm loginForm){
+    public Response changePassword(@PathVariable("userId") String userId, @Valid @RequestBody PasswordChangeForm request){
+
+        UserModel user = this.userService.getUserById(userId);
+
+        String newPassword = request.getPassword();
+
+        return CommonResponse.setResponseWithOk(this.userService.changePassword(user, newPassword),"Password changed successfully", 201);
+    }
+
+
+    @PostMapping("/login")
+    public Response login(@Valid @RequestBody LoginForm loginForm){
 
         String email = loginForm.getEmail();
         String password = loginForm.getPassword();
 
-        //TODO: find how to handle findBy* with CrudRepository
         UserModel user = this.userService.getUserByEmail(email);
 
         if(user == null){
             throw new ApiAuthException("User or password incorrect");
         }
 
-        String response = this.userService.login(user, password);
+        //String jwtToken = this.userService.login(user, password);
 
-        return CommonResponse.setResponseWithOk("SomeToken", response, 200);
+        return CommonResponse.setResponseWithOk(this.userService.login(user, password), "Login succeed", 200);
     }
 
 }

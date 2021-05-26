@@ -1,5 +1,6 @@
 package com.example.apiuser.exception;
 
+import com.example.apiuser.utils.response.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,11 +17,10 @@ public class ApiExceptionHandler {
 
         //Create a payload containing the exception details
         HttpStatus badRequest = HttpStatus.BAD_REQUEST;
-        ApiException apiException = new ApiException(
-                e.getMessage(),
+        Response apiException = new Response(
                 e,
-                badRequest.value(),
-                getStringTimestampNow()
+                e.getMessage(),
+                badRequest.value()
         );
 
         //Return the response entity
@@ -32,11 +32,10 @@ public class ApiExceptionHandler {
 
         //Create a payload containing the exception details
         HttpStatus notFound = HttpStatus.NOT_FOUND;
-        ApiException apiException = new ApiException(
-                e.getMessage(),
+        Response apiException = new Response(
                 e,
-                notFound.value(),
-                getStringTimestampNow()
+                e.getMessage(),
+                notFound.value()
         );
 
         //Return the response entity
@@ -48,11 +47,10 @@ public class ApiExceptionHandler {
 
         //Create a payload containing the exception details
         HttpStatus unauthorized = HttpStatus.UNAUTHORIZED;
-        ApiException apiException = new ApiException(
-                e.getMessage(),
+        Response apiException = new Response(
                 e,
-                unauthorized.value(),
-                getStringTimestampNow()
+                e.getMessage(),
+                unauthorized.value()
         );
 
         //Return the response entity
@@ -62,13 +60,12 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<Object> handleInternalErrorException(Exception e){
-        System.out.println("ALSKDJLJA: " + e.hashCode() + e);
+
         HttpStatus notHandled = HttpStatus.INTERNAL_SERVER_ERROR;
-        ApiException apiException = new ApiException(
-                e.getMessage(),
+        Response apiException = new Response(
                 e,
-                notHandled.value(),
-                getStringTimestampNow()
+                e.getMessage(),
+                notHandled.value()
 
         );
 

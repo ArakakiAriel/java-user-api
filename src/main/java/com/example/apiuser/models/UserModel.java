@@ -1,11 +1,14 @@
 package com.example.apiuser.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity(name="users")
@@ -39,6 +42,11 @@ public class UserModel {
     @Column(name = "updated_at")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Timestamp updatedAt;
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<RoleModel> userRoles = new HashSet<>();
+
 
     public String getUserId() {
         return userId;
@@ -111,4 +119,13 @@ public class UserModel {
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    public Set<RoleModel> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(Set<RoleModel> userRoles) {
+        this.userRoles = userRoles;
+    }
+
 }

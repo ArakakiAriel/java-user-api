@@ -5,14 +5,24 @@ import static com.example.apiuser.utils.DateUtils.getStringTimestampNow;
 public class Response {
     Object response;
     String message;
-     int status_code;
-    String date;
+     int statusCode;
+    Throwable error;
+    String timestamp;
 
-    public Response(Object response, String message, int status_code) {
+    public Response(Throwable error, String message, int statusCode) {
+        this.response = null;
+        this.message = message;
+        this.statusCode = statusCode;
+        this.error = error;
+        this.timestamp = getStringTimestampNow();
+    }
+
+    public Response(Object response, String message, int statusCode) {
         this.response = response;
         this.message = message;
-        this.status_code = status_code;
-        this.date = getStringTimestampNow();
+        this.statusCode = statusCode;
+        this.error = null;
+        this.timestamp = getStringTimestampNow();
     }
 
     public Object getResponse() {
@@ -23,11 +33,16 @@ public class Response {
         return message;
     }
 
-    public int getStatus_code() {
-        return status_code;
+    public int getStatusCode() {
+        return statusCode;
     }
 
-    public String getDate() {
-        return date;
+    public Throwable getError() {
+        return error;
     }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
 }
