@@ -85,7 +85,7 @@ public class UserService {
         }
     }
 
-    public Response login(UserModel user, String password){
+    public ShowUserModel login(UserModel user, String password){
         String hashedPwd = user.getPassword();
 
         if(!BCrypt.checkpw(password, hashedPwd)){
@@ -102,7 +102,7 @@ public class UserService {
         }
         jwtUser.setRoles(roleNames);
 
-        return new Response(createJWT(jwtUser),"Login succeed",200) ;
+        return createJWT(jwtUser) ;
     }
 
     public UserModel updateUser(UserModel user) throws ApiAuthException {

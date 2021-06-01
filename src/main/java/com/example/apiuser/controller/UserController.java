@@ -28,6 +28,7 @@ import java.util.UUID;
 import static com.example.apiuser.utils.DateUtils.getTimestampNow;
 
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
