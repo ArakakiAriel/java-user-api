@@ -15,6 +15,7 @@ import java.util.Set;
 @Table(name="users") //It creates the table with this name or it will go to update it
 public class UserModel {
 
+
     @Id //to create primary key
     @Column(name = "user_id", unique = true, nullable = false, updatable = false) //Column details
     private String userId;
@@ -25,8 +26,7 @@ public class UserModel {
     @NotNull(message="(Email was not provided)")
     @Column(name = "email", unique = true, nullable = false)
     private String email;
-    @NotNull(message="(Phone number was not provided)")
-    @Column(name = "phone_number", nullable = false)
+    @Column(name = "phone_number")
     private String phoneNumber;
     @NotNull(message="(Password was not provided)")
     @Column(name = "password", nullable = false)

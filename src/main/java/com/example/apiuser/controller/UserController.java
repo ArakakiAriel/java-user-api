@@ -8,6 +8,7 @@ import com.example.apiuser.exception.DataNotFoundException;
 import com.example.apiuser.models.ShowUserModel;
 import com.example.apiuser.models.UpdateUserRequestModel;
 import com.example.apiuser.models.UserModel;
+import com.example.apiuser.models.request.forms.CreateUserForm;
 import com.example.apiuser.models.request.forms.LoginForm;
 import com.example.apiuser.models.request.forms.PasswordChangeForm;
 import com.example.apiuser.services.UserService;
@@ -58,7 +59,7 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public Response createUser(@Valid @RequestBody UserModel user, Errors errors){
+    public Response createUser(@Valid @RequestBody CreateUserForm userParameters, Errors errors){
         if(errors.hasErrors()){
             String errorMessage = "";
             List<ObjectError> allErrors = errors.getAllErrors();
@@ -67,6 +68,13 @@ public class UserController {
             }
             throw new ApiRequestException(errorMessage);
         }
+
+        //Creating a UserModel and filling it with the request values
+        UserModel user  = new UserModel();
+        user.setPassword(userParameters.getPassword());
+        user.setEmail(userParameters.getEmail());
+        user.setFullName(userParameters.getFullName());
+
 
         return CommonResponse.setResponseWithOk(this.userService.createUser(user), "User successfully created", 201);
     }
