@@ -23,12 +23,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/role/add",
-							"protocol": "http",
+							"raw": "{{api_user_url}}/api/v1/role/add",
 							"host": [
-								"localhost"
+								"{{api_user_url}}"
 							],
-							"port": "8080",
 							"path": [
 								"api",
 								"v1",
@@ -54,12 +52,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/role/add",
-							"protocol": "http",
+							"raw": "{{api_user_url}}/api/v1/role/add",
 							"host": [
-								"localhost"
+								"{{api_user_url}}"
 							],
-							"port": "8080",
 							"path": [
 								"api",
 								"v1",
@@ -76,12 +72,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/v1/role/get/all",
-							"protocol": "http",
+							"raw": "{{api_user_url}}/api/v1/role/get/all",
 							"host": [
-								"localhost"
+								"{{api_user_url}}"
 							],
-							"port": "8080",
 							"path": [
 								"api",
 								"v1",
@@ -97,18 +91,31 @@
 		},
 		{
 			"name": "HealthCheck",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"response\": null,\r\n    \"message\": \"Server is on\",\r\n    \"statusCode\": 200,\r\n    \"error\": null,\r\n    \"timestamp\": \"2021-06-03 17:53:21\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://localhost:8080/healthcheck",
-					"protocol": "http",
+					"raw": "{{api_user_url}}/api/v1/healthcheck/",
 					"host": [
-						"localhost"
+						"{{api_user_url}}"
 					],
-					"port": "8080",
 					"path": [
-						"healthcheck"
+						"api",
+						"v1",
+						"healthcheck",
+						""
 					]
 				}
 			},
@@ -120,12 +127,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/v1/user/get/all",
-					"protocol": "http",
+					"raw": "{{api_user_url}}/api/v1/user/get/all",
 					"host": [
-						"localhost"
+						"{{api_user_url}}"
 					],
-					"port": "8080",
 					"path": [
 						"api",
 						"v1",
@@ -144,7 +149,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"fullName\": \"Don Pepito\",\r\n        \"email\": \"pepito123@gmail.com\",\r\n        \"phoneNumber\": \"080-4368-6547\",\r\n        \"password\": \"password\"\r\n}",
+					"raw": "{\r\n        \"fullName\": \"pepito example\",\r\n        \"email\": \"pepitoexample@gmail.com\",\r\n        \"password\": \"password\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -152,12 +157,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/v1/user/add",
-					"protocol": "http",
+					"raw": "{{api_user_url}}/api/v1/user/add",
 					"host": [
-						"localhost"
+						"{{api_user_url}}"
 					],
-					"port": "8080",
 					"path": [
 						"api",
 						"v1",
@@ -170,12 +173,24 @@
 		},
 		{
 			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"jsonData = JSON.parse(responseBody);\r",
+							"pm.environment.set(\"user_id\", jsonData.response.userId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"email\": \"pepito123@gmail.com\",\r\n        \"password\": \"password\"\r\n}",
+					"raw": "{\r\n        \"email\": \"pedro_camote@gmail.com\",\r\n        \"password\": \"password\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -183,12 +198,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/v1/user/login",
-					"protocol": "http",
+					"raw": "{{api_user_url}}/api/v1/user/login",
 					"host": [
-						"localhost"
+						"{{api_user_url}}"
 					],
-					"port": "8080",
 					"path": [
 						"api",
 						"v1",
@@ -217,18 +230,46 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/v1/user/get/266f908e-cf35-4635-89bb-ebe033d9e54e",
-					"protocol": "http",
+					"raw": "{{api_user_url}}/api/v1/user/get/4ab25474-ac04-4004-9839-0c48863f1f3d",
 					"host": [
-						"localhost"
+						"{{api_user_url}}"
 					],
-					"port": "8080",
 					"path": [
 						"api",
 						"v1",
 						"user",
 						"get",
-						"266f908e-cf35-4635-89bb-ebe033d9e54e"
+						"4ab25474-ac04-4004-9839-0c48863f1f3d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE PASSWORD",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_user_url}}/api/v1/user/{{user_id}}/password",
+					"host": [
+						"{{api_user_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"{{user_id}}",
+						"password"
 					]
 				}
 			},

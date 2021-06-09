@@ -8,6 +8,7 @@ import com.example.apiuser.models.ShowUserModel;
 import com.example.apiuser.models.UserModel;
 import com.example.apiuser.repositories.RoleRepository;
 import com.example.apiuser.repositories.UserRepository;
+import com.example.apiuser.utils.Security;
 import com.example.apiuser.utils.response.Response;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,6 @@ import static com.example.apiuser.utils.JwtToken.createJWT;
 @Service
 public class UserService {
 
-    Properties config = PropertyValues.getPropValues("config.properties");
-    int salt = Integer.parseInt(config.getProperty("password_salt"));
 
     @Autowired
     UserRepository userRepository;
@@ -35,8 +34,6 @@ public class UserService {
     @Autowired
     RoleRepository roleRepository;
 
-    public UserService() throws IOException {
-    }
 
     public ArrayList<UserModel> getUsers() {
         return (ArrayList<UserModel>) userRepository.findAll();
@@ -54,7 +51,7 @@ public class UserService {
 
 
     //Creates the user in the db
-    public UserModel createUser(UserModel user) {
+    public UserModel createUser(UserModel user) throws IOException {
         try{
 
             //Creating a random UUID to set the user's id
@@ -63,8 +60,9 @@ public class UserService {
             //Setting the "Created at" value
             Timestamp now = getTimestampNow();
             user.setCreatedAt(now);
-            //Encrypting the password before saving //TODO: Cambiarlo por uno propio.
-            String hashedPwd = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(salt));
+            //Encrypting the password before saving
+            String pwd = user.getPassword();
+            String hashedPwd = Security.encryptPassword(pwd);
             user.setPassword(hashedPwd);
 
             //Setting the "status" value
@@ -92,6 +90,11 @@ public class UserService {
             throw new ApiAuthException("User or password Incorrect");
         }
 
+        //Update last login date
+        Timestamp now = getTimestampNow();
+        user.setLastLogin(now);
+        userRepository.save(user);
+
         ShowUserModel jwtUser = new ShowUserModel(user);
 
         Set<RoleModel> userRoles = user.getUserRoles();
@@ -111,14 +114,14 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public String changePassword(UserModel user, String newPassword){
+    public String changePassword(UserModel user, String newPassword) throws IOException {
 
+        String hashedPwd = Security.encryptPassword(newPassword);
+        user.setPassword(hashedPwd);
+
+        //Update updated_at date
         Timestamp now = getTimestampNow();
         user.setUpdatedAt(now);
-
-        //Encrypting the new password before saving //TODO: Cambiarlo por uno propio.
-        String hashedPwd = BCrypt.hashpw(newPassword, BCrypt.gensalt(salt));
-        user.setPassword(hashedPwd);
 
         userRepository.save(user);
 

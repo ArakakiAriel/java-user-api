@@ -14,19 +14,15 @@ import com.example.apiuser.models.request.forms.PasswordChangeForm;
 import com.example.apiuser.services.UserService;
 import com.example.apiuser.utils.response.CommonResponse;
 import com.example.apiuser.utils.response.Response;
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.sql.Timestamp;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
-import static com.example.apiuser.utils.DateUtils.getTimestampNow;
 
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -59,7 +55,7 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public Response createUser(@Valid @RequestBody CreateUserForm userParameters, Errors errors){
+    public Response createUser(@Valid @RequestBody CreateUserForm userParameters, Errors errors) throws IOException {
         if(errors.hasErrors()){
             String errorMessage = "";
             List<ObjectError> allErrors = errors.getAllErrors();
@@ -93,11 +89,21 @@ public class UserController {
         //return this.userService.updateUser(user);
     }
 
-    public Response changePassword(@PathVariable("userId") String userId, @Valid @RequestBody PasswordChangeForm request){
 
+    @PutMapping("/password")
+    public Response changePassword(@Valid @RequestBody PasswordChangeForm request, Errors errors) throws IOException {
+        if(errors.hasErrors()){
+            String errorMessage = "";
+            List<ObjectError> allErrors = errors.getAllErrors();
+            for(ObjectError e: allErrors){
+                errorMessage += e.getDefaultMessage();
+            }
+            throw new ApiRequestException(errorMessage);
+        }
+        String userId = request.getUserId();
         UserModel user = this.userService.getUserById(userId);
 
-        String newPassword = request.getPassword();
+        String newPassword = request.getNewPassword();
 
         return CommonResponse.setResponseWithOk(this.userService.changePassword(user, newPassword),"Password changed successfully", 201);
     }

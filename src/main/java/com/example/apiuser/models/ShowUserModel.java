@@ -8,6 +8,7 @@ import java.util.Set;
 
 public class ShowUserModel {
 
+    private String userId;
     private String fullName;
     private String email;
     private String phoneNumber;
@@ -18,6 +19,7 @@ public class ShowUserModel {
     private Set<String> roles ;
 
     public ShowUserModel(UserModel user) {
+        this.userId = user.getUserId();
         this.fullName = user.getFullName();
         this.email = user.getEmail();
         this.phoneNumber = user.getPhoneNumber();
@@ -25,6 +27,10 @@ public class ShowUserModel {
         this.createdAt = user.getCreatedAt();
         this.lastLogin = user.getLastLogin();
         this.updatedAt = user.getUpdatedAt();
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public String getFullName() {

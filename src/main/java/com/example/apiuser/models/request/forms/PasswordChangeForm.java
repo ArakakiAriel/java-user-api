@@ -1,13 +1,23 @@
 package com.example.apiuser.models.request.forms;
 
-public class PasswordChangeForm {
-    String password;
+import javax.validation.constraints.NotNull;
 
-    public PasswordChangeForm(String password) {
-        this.password = password;
+public class PasswordChangeForm {
+    @NotNull(message="(UserId was not provided)")
+    String userId;
+    @NotNull(message="(Password was not provided)")
+    String newPassword;
+
+    public PasswordChangeForm(String userId, String newPassword) {
+        this.userId = userId;
+        this.newPassword = newPassword;
     }
 
-    public String getPassword() {
-        return password;
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
     }
 }

@@ -2,6 +2,7 @@ package com.example.apiuser.models;
 
 import javax.validation.constraints.Pattern;
 import java.sql.Timestamp;
+import java.util.Date;
 
 public class UpdateUserRequestModel {
     private String fullName;
@@ -9,8 +10,8 @@ public class UpdateUserRequestModel {
     private String email;
     private String phoneNumber;
     private String status;
-    private Timestamp lastLogin;
-    private Timestamp updatedAt;
+    private Date lastLogin;
+    private Date updatedAt;
 
     public String getFullName() {
         return fullName;
@@ -44,19 +45,19 @@ public class UpdateUserRequestModel {
         this.status = status;
     }
 
-    public Timestamp getLastLogin() {
+    public Date getLastLogin() {
         return lastLogin;
     }
 
-    public void setLastLogin(Timestamp lastLogin) {
+    public void setLastLogin(Date lastLogin) {
         this.lastLogin = lastLogin;
     }
 
-    public Timestamp getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Timestamp updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 }
