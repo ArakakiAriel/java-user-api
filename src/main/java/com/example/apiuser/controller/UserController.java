@@ -45,12 +45,10 @@ public class UserController {
     @GetMapping("/get/{userId}")
     public Response getUserById(@PathVariable("userId") String userId){
         UserModel user = userService.getUserById(userId);
-        if(user == null){
-            throw new DataNotFoundException("User not found in the database");
-        }
+
 
         ShowUserModel showUser = new ShowUserModel(user);
-
+        userService.setRolesShowUserModel(user,showUser);
         return CommonResponse.setResponseWithOk(showUser, "", 200);
     }
 
@@ -70,7 +68,6 @@ public class UserController {
         user.setPassword(userParameters.getPassword());
         user.setEmail(userParameters.getEmail());
         user.setFullName(userParameters.getFullName());
-
 
         return CommonResponse.setResponseWithOk(this.userService.createUser(user), "User successfully created", 201);
     }
@@ -103,7 +100,14 @@ public class UserController {
         String userId = request.getUserId();
         UserModel user = this.userService.getUserById(userId);
 
+        String oldPassword = request.getOldPassword();
+        if(!this.userService.validatePassword(userId,oldPassword)){
+            throw new ApiAuthException("The old password is incorrect");
+        }
+
+
         String newPassword = request.getNewPassword();
+
 
         return CommonResponse.setResponseWithOk(this.userService.changePassword(user, newPassword),"Password changed successfully", 201);
     }

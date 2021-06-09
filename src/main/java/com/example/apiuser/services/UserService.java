@@ -41,12 +41,34 @@ public class UserService {
 
     public UserModel getUserById(String id){
 
-        return userRepository.findById(id)
+        UserModel user =  userRepository.findById(id)
                 .orElse(null);
+
+
+        if(user == null){
+            throw new DataNotFoundException("User not found in the database");
+        }
+
+        return user;
     }
 
     public UserModel getUserByEmail(String email){
         return userRepository.findByEmail(email);
+    }
+
+    public Boolean validatePassword(String userId, String password) throws IOException {
+        UserModel user = userRepository.findById(userId)
+                .orElse(null);
+        if(user == null){
+            throw new DataNotFoundException("No user found with that ID");
+        }
+
+        if(!BCrypt.checkpw(password, user.getPassword())){
+            throw new ApiAuthException("The old password is incorrect");
+        }
+
+
+        return true;
     }
 
 
@@ -97,13 +119,7 @@ public class UserService {
 
         ShowUserModel jwtUser = new ShowUserModel(user);
 
-        Set<RoleModel> userRoles = user.getUserRoles();
-        Set<String> roleNames = new HashSet<>();
-        for (RoleModel rol:userRoles
-             ) {
-            roleNames.add(rol.getRoleName());
-        }
-        jwtUser.setRoles(roleNames);
+        setRolesShowUserModel(user, jwtUser);
 
         return createJWT(jwtUser) ;
     }
@@ -114,7 +130,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public String changePassword(UserModel user, String newPassword) throws IOException {
+    public ShowUserModel changePassword(UserModel user, String newPassword) throws IOException {
 
         String hashedPwd = Security.encryptPassword(newPassword);
         user.setPassword(hashedPwd);
@@ -125,7 +141,20 @@ public class UserService {
 
         userRepository.save(user);
 
-        return "User password successfully changed";
+        ShowUserModel userModel = new ShowUserModel(user);
+        setRolesShowUserModel(user, userModel);
+
+        return userModel;
+    }
+
+    public void setRolesShowUserModel(UserModel user, ShowUserModel showUserModel){
+        Set<RoleModel> userRoles = user.getUserRoles();
+        Set<String> roleNames = new HashSet<>();
+        for (RoleModel rol:userRoles
+        ) {
+            roleNames.add(rol.getRoleName());
+        }
+        showUserModel.setRoles(roleNames);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.apiuser.models;
 
 
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.List;
