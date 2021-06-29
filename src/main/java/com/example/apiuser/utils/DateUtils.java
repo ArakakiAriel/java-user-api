@@ -2,7 +2,11 @@ package com.example.apiuser.utils;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class DateUtils {
 
@@ -13,13 +17,8 @@ public class DateUtils {
     }
 
     public static Timestamp getTimestampNow(){
-
-        //Date object
-        Date date= new Date();
-        //getTime() returns current time in milliseconds
-        long time = date.getTime();
-        //Passed the milliseconds to constructor of Timestamp class
-        Timestamp now = new Timestamp(time);
+        LocalDateTime time = LocalDateTime.now() ;
+        Timestamp now = Timestamp.valueOf(time);
 
         return now;
     }
