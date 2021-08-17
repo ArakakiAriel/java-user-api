@@ -42,12 +42,16 @@ public class UserModel {
     @Column(name = "updated_at")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Timestamp updatedAt;
+    
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleModel> userRoles = new HashSet<>();
-
-
+    
+    @OneToMany(mappedBy = "user", cascade= CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<UserAddressModel> userAddress = new HashSet<>();
+    
+    
     public String getUserId() {
         return userId;
     }
@@ -123,9 +127,15 @@ public class UserModel {
     public Set<RoleModel> getUserRoles() {
         return userRoles;
     }
+    
 
     public void setUserRoles(Set<RoleModel> userRoles) {
         this.userRoles = userRoles;
     }
+
+    public Set<UserAddressModel> getUserAddress() {
+        return userAddress;
+    }
+    
 
 }

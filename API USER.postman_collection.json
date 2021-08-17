@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "340ee353-9178-4249-beb1-f5d1b467ea1c",
+		"_postman_id": "1403ebdf-1b33-4c9b-aa95-09cdb011cfea",
 		"name": "API USER",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -90,6 +90,364 @@
 			]
 		},
 		{
+			"name": "USER_ADDRESS",
+			"item": [
+				{
+					"name": "Add a new user address",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "0707ca88-c752-4d4b-8668-4776c4eb5e84",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"postalCode\": 1200,\r\n    \"address1\":\"New address\",\r\n    \"address2\":\"New Dhaka address\",\r\n    \"city\":\"Dhaka\",\r\n    \"state\": \"Dhaka\",\r\n    \"country\": \"Bangladesh\",\r\n    \"phoneNumber\": \"01722053689\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_url}}/api/v1/user/2a2722ca-c90e-4fd6-bd36-fde72c0ed8c7/address/add",
+							"host": [
+								"{{api_user_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"2a2722ca-c90e-4fd6-bd36-fde72c0ed8c7",
+								"address",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get address",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_url}}/api/v1/user/2a2722ca-c90e-4fd6-bd36-fde72c0ed8c7/address/get",
+							"host": [
+								"{{api_user_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"2a2722ca-c90e-4fd6-bd36-fde72c0ed8c7",
+								"address",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Address verify",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n\"email\":\"dangea@gmail.com\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_url}}/api/v1/user/get",
+							"host": [
+								"{{api_user_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify Address",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"postalCode\": 12342,\r\n    \"address1\":\"Edit address\",\r\n    \"address2\":\"Edit Address\",\r\n    \"city\":\"Tokyo edited\",\r\n    \"state\": \"Dhaka\",\r\n    \"country\": \"Bangladesh\",\r\n    \"phoneNumber\": \"01722053689\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_url}}/api/v1/user/2a2722ca-c90e-4fd6-bd36-fde72c0ed8c7/address/10/modify",
+							"host": [
+								"{{api_user_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"2a2722ca-c90e-4fd6-bd36-fde72c0ed8c7",
+								"address",
+								"10",
+								"modify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Address",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_user_url}}/api/v1/user/address/10/delete",
+							"host": [
+								"{{api_user_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"address",
+								"10",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "USERS",
+			"item": [
+				{
+					"name": "GET ALL USERS",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_user_url}}/api/v1/user/get/all",
+							"host": [
+								"{{api_user_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"get",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Create a user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"fullName\": \"Dangea789 Murung\",\r\n        \"email\": \"dangea789@gmail.com\",\r\n        \"password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_url}}/api/v1/user/add",
+							"host": [
+								"{{api_user_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET UserByID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_url}}/api/v1/user/get/0707ca88-c752-4d4b-8668-4776c4eb5e84",
+							"host": [
+								"{{api_user_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"get",
+								"0707ca88-c752-4d4b-8668-4776c4eb5e84"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE PASSWORD",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_url}}/api/v1/user/2a2722ca-c90e-4fd6-bd36-fde72c0ed8c7/password",
+							"host": [
+								"{{api_user_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"2a2722ca-c90e-4fd6-bd36-fde72c0ed8c7",
+								"password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fullName\": \"Dangea Murung\",\r\n    \"email\": \"dangea1@gmail.com\",\r\n    \"phoneNumber\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_url}}/api/v1/user/update/2a2722ca-c90e-4fd6-bd36-fde72c0ed8c7",
+							"host": [
+								"{{api_user_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"update",
+								"2a2722ca-c90e-4fd6-bd36-fde72c0ed8c7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"user_id\", jsonData.response.userId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"email\": \"dangea@gmail.com\",\r\n        \"password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_user_url}}/api/v1/user/login",
+							"host": [
+								"{{api_user_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "HealthCheck",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -116,160 +474,6 @@
 						"v1",
 						"healthcheck",
 						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET ALL USERS",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{api_user_url}}/api/v1/user/get/all",
-					"host": [
-						"{{api_user_url}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"user",
-						"get",
-						"all"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "POST Create a user",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n        \"fullName\": \"pepito example\",\r\n        \"email\": \"pepitoexample@gmail.com\",\r\n        \"password\": \"password\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{api_user_url}}/api/v1/user/add",
-					"host": [
-						"{{api_user_url}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"user",
-						"add"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Login",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"jsonData = JSON.parse(responseBody);\r",
-							"pm.environment.set(\"user_id\", jsonData.response.userId);"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n        \"email\": \"pedro_camote@gmail.com\",\r\n        \"password\": \"password\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{api_user_url}}/api/v1/user/login",
-					"host": [
-						"{{api_user_url}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"user",
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET UserByID",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{api_user_url}}/api/v1/user/get/4ab25474-ac04-4004-9839-0c48863f1f3d",
-					"host": [
-						"{{api_user_url}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"user",
-						"get",
-						"4ab25474-ac04-4004-9839-0c48863f1f3d"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "UPDATE PASSWORD",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n        \"password\": \"password\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{api_user_url}}/api/v1/user/{{user_id}}/password",
-					"host": [
-						"{{api_user_url}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"user",
-						"{{user_id}}",
-						"password"
 					]
 				}
 			},

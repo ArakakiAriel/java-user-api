@@ -16,5 +16,9 @@
 		
 ------------------------------------------------------------------------------------------------
 
-## Database Schema
-![DB Schema](https://japanproduct.atlassian.net/d16da9e8-eeea-4390-8ba0-1ba9f7c5f476#media-blob-url=true&id=71a6fa2c-9f1a-496e-b5c5-ec9b0cc2f2fe&contextId=360657&collection=contentId-360657)
+## User Database Schema
+[DB Schema](https://japanproduct.atlassian.net/wiki/spaces/DB/pages/360657/User+design)
+
+## Postman collection for API CALLS
+- There is a file in the root called "API USER.postman_collection.json" that can be imported in POSTMAN to get all the calls with examples.
+

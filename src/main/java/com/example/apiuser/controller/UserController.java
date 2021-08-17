@@ -5,12 +5,16 @@ package com.example.apiuser.controller;
 import com.example.apiuser.exception.ApiAuthException;
 import com.example.apiuser.exception.ApiRequestException;
 import com.example.apiuser.exception.DataNotFoundException;
+import com.example.apiuser.models.FindByEmailModel;
 import com.example.apiuser.models.ShowUserModel;
 import com.example.apiuser.models.UpdateUserRequestModel;
+import com.example.apiuser.models.UserAddressModel;
 import com.example.apiuser.models.UserModel;
 import com.example.apiuser.models.request.forms.CreateUserForm;
 import com.example.apiuser.models.request.forms.LoginForm;
 import com.example.apiuser.models.request.forms.PasswordChangeForm;
+import com.example.apiuser.models.request.forms.UserAddressForm;
+import com.example.apiuser.services.UserAddressService;
 import com.example.apiuser.services.UserService;
 import com.example.apiuser.utils.response.CommonResponse;
 import com.example.apiuser.utils.response.Response;
@@ -32,6 +36,8 @@ public class UserController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    UserAddressService userAddressService;
 
 
 
@@ -54,6 +60,7 @@ public class UserController {
 
     @PostMapping("/add")
     public Response createUser(@Valid @RequestBody CreateUserForm userParameters, Errors errors) throws IOException {
+        
         if(errors.hasErrors()){
             String errorMessage = "";
             List<ObjectError> allErrors = errors.getAllErrors();
@@ -129,5 +136,125 @@ public class UserController {
 
         return CommonResponse.setResponseWithOk(this.userService.login(user, password), "Login succeed", 200);
     }
+    
+    @PostMapping("/{userId}/address/add")
+    public Response createUserAddress(@PathVariable("userId") String userId, @Valid @RequestBody UserAddressForm userAddressParameters, Errors errors) throws IOException {
+        if(errors.hasErrors()){
+            String errorMessage = "";
+            List<ObjectError> allErrors = errors.getAllErrors();
+            for(ObjectError e: allErrors){
+                errorMessage += e.getDefaultMessage();
+            }
+            throw new ApiRequestException(errorMessage);
+        }
+        
+        UserModel user = userService.getUserById(userId);
+
+        
+        
+        
+        //Creating a UserModel and filling it with the request values
+        UserAddressModel userAddress  = new UserAddressModel();
+
+
+        if(user.getUserAddress().size() == 0){
+            userAddress.setDefaultAddress(true);
+        }else{
+            userAddress.setDefaultAddress(false);
+        }
+       // userAddress.setUserId(userId);
+        userAddress.setUser(user);
+        userAddress.setPostalCode(userAddressParameters.getPostalCode());
+        userAddress.setAddress1(userAddressParameters.getAddress1());
+        userAddress.setAddress2(userAddressParameters.getAddress2());
+        userAddress.setCity(userAddressParameters.getCity());
+        userAddress.setCountry(userAddressParameters.getCountry());
+        userAddress.setState(userAddressParameters.getState());
+        userAddress.setPhoneNumber(userAddressParameters.getPhoneNumber());
+        
+
+        return CommonResponse.setResponseWithOk(this.userAddressService.createUserAddress(userAddress), "User Address successfully created", 201);
+    }
+    
+      //Get UserAddress By ID
+    @GetMapping("/{userId}/address/get")
+    public Response getUserAddressById(@PathVariable("userId") String userId){
+        UserModel user = userService.getUserById(userId);
+
+        
+        //ShowUserAddressModel showUserAddress = new ShowUserAddressModel();
+        //userAddressService.setRolesShowUserModel(user,showUserAddress);
+        return CommonResponse.setResponseWithOk(user.getUserAddress(), "", 200);
+    }
+    
+    @GetMapping("/get")
+    public Response getUserAddressByEmail(@RequestBody FindByEmailModel email){
+        UserModel user = userService.getUserByEmail(email.getEmail());
+        
+        return CommonResponse.setResponseWithOk(user,"", 200);
+    }
+    
+    @PutMapping("/{userId}/address/{userAddressId}/modify")
+    public Response updateUserAddress(@PathVariable("userId") String userId,@PathVariable("userAddressId") String userAddressId, @Valid @RequestBody UserAddressForm userAddressParameters, Errors errors) throws IOException {
+        
+        if(errors.hasErrors()){
+            String errorMessage = "";
+            List<ObjectError> allErrors = errors.getAllErrors();
+            for(ObjectError e: allErrors){
+                errorMessage += e.getDefaultMessage();
+            }
+            throw new ApiRequestException(errorMessage);
+        }
+        
+        UserModel user = userService.getUserById(userId);
+        //UserAddressModel userAddresses = userAddressService.getUserAddressById(userAddressId);
+        
+        //Creating a UserModel and filling it with the request values
+        UserAddressModel userAddress  = userAddressService.getUserAddressById(userAddressId);
+        
+        if(userAddress.getUser()!= user){
+            throw new ApiAuthException("Authorization Error");
+        }
+        
+       // userAddress.setUserId(userId);
+        userAddress.setUserAddressId(userAddressId);
+        userAddress.setUser(user);
+        userAddress.setPostalCode(userAddressParameters.getPostalCode());
+        userAddress.setAddress1(userAddressParameters.getAddress1());
+        userAddress.setAddress2(userAddressParameters.getAddress2());
+        userAddress.setCity(userAddressParameters.getCity());
+        userAddress.setCountry(userAddressParameters.getCountry());
+        userAddress.setState(userAddressParameters.getState());
+        userAddress.setPhoneNumber(userAddressParameters.getPhoneNumber());
+        
+
+        return CommonResponse.setResponseWithOk(this.userAddressService.updateUserAddress(userAddress), "User Address successfully updated", 201);
+    }
+    
+    @PutMapping("/{userId}/address/{userAddressId}/default")
+    public Response updateUserDefaultAddress(@PathVariable("userId") String userId,@PathVariable("userAddressId") String userAddressId ) throws IOException {
+        
+        UserModel user = userService.getUserById(userId);
+        
+        //Creating a UserModel and filling it with the request values
+        UserAddressModel userAddress  = userAddressService.getUserAddressById(userAddressId);
+        
+        if(userAddress.getUser()!= user){
+            throw new ApiAuthException("Authorization Error");
+        }
+             
+        for (UserAddressModel address : user.getUserAddress()) {
+        //write code
+            if(address.getDefaultAddress()== true){
+                address.setDefaultAddress(false);
+                this.userAddressService.updateUserAddress(address);
+                break;
+            }
+        }
+        userAddress.setDefaultAddress(true);
+        return CommonResponse.setResponseWithOk(this.userAddressService.updateUserAddress(userAddress), "User Default Address successfully updated", 201);
+    }
+    
+ 
 
 }
